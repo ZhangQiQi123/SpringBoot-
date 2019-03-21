@@ -1,0 +1,33 @@
+ZooKeeper是一个分布式的，开放源码的分布式应用程序协调服务，是Google的Chubby一个开源的实现，是Hadoop和Hbase的重要组件。它是一个为分布式应用提供一致性服务的软件，提供的功能包括：配置维护、域名服务、分布式同步、组服务等。
+	安装：http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.13/
+	使用：https://blog.csdn.net/dwl0208/article/details/81807881
+	服务注册方使用curator-x-discovery-server注册服务
+<!-- curator-x-discovery-server 服务注册方：发现服务-->
+	<dependency>
+		<groupId>org.apache.curator</groupId>
+		<artifactId>curator-x-discovery-server</artifactId>
+		<version>2.11.0</version>
+	</dependency>
+	服务调用方使用curator-x-discovery 发现（调用）服务
+<!-- curator-x-discovery 服务调用方：调用服务-->
+<dependency>
+	<groupId>org.apache.curator</groupId>
+	<artifactId>curator-x-discovery</artifactId>
+	<version>2.11.0</version>
+</dependency>
+	cd/zookeeper/bin/zkServer.cmd开启zookeeper服务
+微服务学习心得：
+1)	创建好基于springboot的maven工程server1，直至Controller层能够在浏览器中访问
+2)	把创建好的服务端server1工程通过curator的ServiceInstance在zookeeper上注册为服务 (创建服务实例)
+服务实例包含：zookeeper所在服务IP、Port、以及服务的实例名
+a)	Application.properties配置文件中配置zookeeper.server=IP:PORT(zookeeper所在的服务器ip及zookeeper端口号)
+b)	Pom.xml中引入curator-x-discovery-server的jar包
+c)	启动server1的工程，可以在浏览器中访问接口
+3)	创建好基于springboot的maven工程server2，直至Controller层能够在浏览器中访问
+4)	把创建好的服务端server2工程通过curator的ServiceInstance在zookeeper上注册为服务 (创建服务实例)
+服务实例包含：zookeeper所在服务IP、Port、以及服务的实例名
+a)	Application.properties配置文件中配置zookeeper.server=IP:PORT(zookeeper所在的服务器ip及zookeeper端口号)
+
+b)	Pom.xml中引入curator-x-discovery-server的jar包
+c)	启动server2的工程，可以在浏览器中访问接口
+5)	创建客户端，通过zookeeper注册中心发现并调用服务
